@@ -1,0 +1,5 @@
+pandas
+fastapi
+plotly
+matplotlib
+uvicorn
