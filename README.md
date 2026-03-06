@@ -1,9 +1,9 @@
 # 📊 Energy Data Pipeline & Dashboard
 
-[![Python](https://img.shields.io)](https://www.python.org)
-[![FastAPI](https://img.shields.io)](https://fastapi.tiangolo.com)
-[![Streamlit](https://img.shields.io)](https://streamlit.io)
-[![Pandas](https://img.shields.io)](https://pandas.pydata.org)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
 
 Сервис для мониторинга и анализа данных энергопотребления (EUR/SIB). Система включает в себя REST API на бэкенде и интерактивный дашборд для визуализации метрик.
 
