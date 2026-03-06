@@ -32,11 +32,11 @@ task_04_service/
 
 ## 📦 Установка и запуск
 
-Для запуска проекта 
+Скачивание проекта 
 ```
 git clone https://github.com/collagememorycollage/task_04_service
 ```
-
+Даем права доступа
 ```
 chmod -R 777 task_04_service
 ```
