@@ -7,6 +7,21 @@
 
 Сервис для мониторинга и анализа данных энергопотребления (EUR/SIB). Система включает в себя REST API на бэкенде и интерактивный дашборд для визуализации метрик.
 
+## 📂 Структура проекта
+task_04_service/
+│
+├── backend/                   
+│   ├── data.csv         
+│   └── main.py       
+├── frontend/                    
+│   ├── main.py   
+│   ├── page1.py
+│   └── page2.py
+├── .gitignore        
+├── README.md 
+├── requirements.txt
+└── start.sh
+
 ## 🛠 Архитектура
 - **Frontend**: Streamlit (мультистраничное приложение).
 - **Backend**: FastAPI (Uvicorn сервер).
@@ -14,13 +29,12 @@
 
 ## 📦 Установка и запуск
 
-Структура проекта
-
-
-
-Для запуска проекта можно использовать комманду
+Для запуска проекта 
 ```
-chmod +x start.sh
+git clone https://github.com/collagememorycollage/task_04_service
+chmod -R 777 task_04_service
+cd task_04_service
+./start.sh
 ```
 После чего будут установлены зависимости и файла requirements.txt и развернуто 2 сервера. 
 
