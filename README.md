@@ -9,18 +9,18 @@
 
 ## 📂 Структура проекта
 task_04_service/
-│
-├── backend/                   
-│   ├── data.csv         
-│   └── main.py       
-├── frontend/                    
-│   ├── main.py   
-│   ├── page1.py
-│   └── page2.py
-├── .gitignore        
-├── README.md 
-├── requirements.txt
-└── start.sh
+├── .gitignore          
+├── README.md           # Описание проекта
+├── requirements.txt    # Файл с зависимостями 
+├── start.sh            # Скрипт для старта
+├── backend/
+│   ├── data.csv         # Файл с данными 
+│   └── main.py          # API (FastAPI/Flask)
+└── frontend/
+    ├── main.py          # Точка входа (Streamlit/Dash)
+    ├── page1.py         # Модуль первой страницы
+    └── page2.py         # Модуль второй страницы
+
 
 ## 🛠 Архитектура
 - **Frontend**: Streamlit (мультистраничное приложение).
