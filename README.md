@@ -35,8 +35,16 @@ task_04_service/
 Для запуска проекта 
 ```
 git clone https://github.com/collagememorycollage/task_04_service
+```
+
+```
 chmod -R 777 task_04_service
+```
+
+```
 cd task_04_service
+```
+```
 ./start.sh
 ```
 После чего будут установлены зависимости и файла requirements.txt и развернуто 2 сервера. 
