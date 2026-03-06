@@ -41,6 +41,20 @@ def draw_max(df):
         val = df[field].max()
         col.metric(label, f"{val:.2f} {unit}")
 
+def draw_min(df):
+    st.subheader("Максимальные показатели за период")
+    m_cols = st.columns(4)
+    metrics = [
+        ("Цена EUR", "price_eur", "€"),
+        ("Цена SIB", "price_sib", "₽"),
+        ("Потребление EUR", "consumption_eur", "kW"),
+        ("Потребление SIB", "consumption_sib", "kW")
+    ]
+
+    for col, (label, field, unit) in zip(m_cols, metrics):
+        val = df[field].min()
+        col.metric(label, f"{val:.2f} {unit}")
+
 def draw_graph(df):
     print(df.info())
     plots = [
@@ -63,6 +77,9 @@ def draw_graph(df):
     mask = (df['timestep'] >= start_dt) & (df['timestep'] <= end_dt)
     filtered_df = df.loc[mask]
 
+    draw_min(filtered_df)
+    draw_max(filtered_df)
+
     st.divider()
     chart_cols = st.columns(2)
 
@@ -81,5 +98,4 @@ def draw_graph(df):
             st.plotly_chart(fig, use_container_width=True)
 
 DATA = fetch_data()
-draw_max(DATA)
 draw_graph(DATA)
