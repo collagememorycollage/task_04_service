@@ -40,14 +40,14 @@ git clone https://github.com/collagememorycollage/task_04_service
 ```
 chmod -R 777 task_04_service
 ```
-
+Переходим в дерикторию
 ```
 cd task_04_service
 ```
+Запускаем скрипт для старта проекта
 ```
 ./start.sh
 ```
-После чего будут установлены зависимости и файла requirements.txt и развернуто 2 сервера. 
 
 frontend -
 backend -
