@@ -3,3 +3,5 @@ fastapi
 plotly
 matplotlib
 uvicorn
+streamlit
+streamlit_calendar

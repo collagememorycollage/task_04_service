@@ -4,77 +4,82 @@ import plotly.express as px
 import datetime
 from streamlit_calendar import calendar
 import streamlit as st
+import requests
+import json
 
+SERVER_HOST = "http://127.0.0.1"
+SERVER_PORT = "9000"
+DATE = datetime.datetime.now().strftime("%d, %B, %Y")
+DATA = None
 
-df = pd.read_csv("./../backend/data.csv")
+st.title(f"Дата: {DATE}")
 
+def fetch_data():
+    try:
+        res = requests.get(f"{SERVER_HOST}:{SERVER_PORT}/get-all-data")
+        df = pd.DataFrame(res.json())
+        st.title("Полный список полученных данных")
+        df['timestep'] = pd.to_datetime(df['timestep'])
+        st.write(df)
+        return df
 
-df['timestep'] = pd.to_datetime(df['timestep'])
+    except Exception as e:
+        st.error(f"Ошибка подключения к серверу {e}")
+        return None
 
+def draw_max(df):
+    st.subheader("Максимальные показатели за период")
+    m_cols = st.columns(4)
+    metrics = [
+        ("Цена EUR", "price_eur", "€"),
+        ("Цена SIB", "price_sib", "₽"),
+        ("Потребление EUR", "consumption_eur", "kW"),
+        ("Потребление SIB", "consumption_sib", "kW")
+    ]
 
-date = datetime.datetime.now().strftime("%d, %B, %Y")
-st.title(f"Time: {date}")
+    for col, (label, field, unit) in zip(m_cols, metrics):
+        val = df[field].max()
+        col.metric(label, f"{val:.2f} {unit}")
 
+def draw_graph(df):
+    print(df.info())
+    plots = [
+        ("Потребление EUR", "consumption_eur", "teal"),
+        ("Цена EUR", "price_eur", "gold"),
+        ("Потребление SIB", "consumption_sib", "blue"),
+        ("Цена SIB", "price_sib", "orange")
+    ]
 
-# 2. Виджет выбора диапазона
-dates = st.date_input(
-    "Выберите диапазон дат",
-    value=(df['timestep'].min(), df['timestep'].max()),
-    min_value=df['timestep'].min(),
-    max_value=df['timestep'].max()
-)
+    dates = st.date_input(
+        "Выберите диапазон дат",
+        value=('2008-01-10', '2008-10-10'),
+        min_value=df['timestep'].min(),
+        max_value=df['timestep'].max()
+    )
 
-# 3. Фильтрация (проверка, что выбраны обе даты: начало и конец)
-if isinstance(dates, tuple) and len(dates) == 2:
     start_date, end_date = dates
-    
-    # Преобразуем границы из date в datetime, чтобы сравнение работало
     start_dt = pd.to_datetime(start_date)
-    # Конец дня, чтобы захватить данные за последнюю выбранную дату целиком
-    end_dt = pd.to_datetime(end_date) + pd.Timedelta(hours=23, minutes=59, seconds=59)
-    
-    # Фильтруем (теперь типы слева и справа совпадают)
+    end_dt = pd.to_datetime(end_date)
     mask = (df['timestep'] >= start_dt) & (df['timestep'] <= end_dt)
     filtered_df = df.loc[mask]
-   
-    col1, col2 = st.columns(2)
 
-    #max min
-    with col1:
+    st.divider()
+    chart_cols = st.columns(2)
 
-        max_price_eur = filtered_df['price_eur'].max()
-        st.write("Max price eur: ", max_price_eur)
+    chart_cols = st.columns(2)
 
+    for i, (title, column, color) in enumerate(plots):
+        with chart_cols[i % 2]:
+            fig = px.bar(
+                filtered_df,
+                x='timestep',
+                y=column,
+                title=title,
+                color_discrete_sequence=[color]
+            )
+            fig.update_layout(margin=dict(l=20, r=20, t=40, b=20))
+            st.plotly_chart(fig, use_container_width=True)
 
-        max_price_sib = filtered_df['price_sib'].max()
-        st.write("Max price sib: ", max_price_sib)
-
-    with col2:
-    
-        max_consumption_eur = filtered_df['consumption_eur'].max()
-        st.write("Max consumption eur: ", max_consumption_eur)
-
-
-        max_consumption_sib = filtered_df['consumption_sib'].max()
-        st.write("Max consumption sib: ", max_consumption_sib)
-
-
-    #fig_1
-    st.title("consumption EUR")
-    fig1 = px.bar(filtered_df, x='timestep', y='consumption_eur')
-    st.plotly_chart(fig1, width='stretch')
-    #fig_2
-    st.title("price EUR")
-    fig2 = px.bar(filtered_df, x='timestep', y='price_eur')
-    st.plotly_chart(fig2, width='stretch')
-    #fig_3
-    st.title("consumption SIB")
-    fig3 = px.bar(filtered_df, x='timestep', y='consumption_sib')
-    st.plotly_chart(fig3, width='stretch')
-    #fig_4
-    st.title("price SIB")
-    fig4 = px.bar(filtered_df, x='timestep', y='price_sib')
-    st.plotly_chart(fig4,width='stretch')
-else:
-    st.info("Выберите конечную дату диапазона")
-
+DATA = fetch_data()
+draw_max(DATA)
+draw_graph(DATA)
